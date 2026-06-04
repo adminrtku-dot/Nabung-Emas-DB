@@ -3,7 +3,8 @@
  * Author: top8
  * Description: Menangani database spreadsheet secara otomatis, inisialisasi sheet, 
  * dan menyediakan API CRUD aman dengan validasi PIN.
- * * Update: Perbaikan kueri pencarian file 'q' agar kompatibel dengan DriveApp.searchFiles()
+ * * Update: Mengganti DriveApp.searchFiles() dengan iterasi getFiles() yang 100% aman
+ * untuk menghindari error 'Invalid argument: q' akibat pembatasan kueri API Google Drive.
  */
 
 // Nama Spreadsheet utama yang digunakan untuk menyimpan seluruh database aplikasi
@@ -15,14 +16,22 @@ const SPREADSHEET_NAME = "Nabung Emas DB";
  * @return {Spreadsheet} Spreadsheet dari Google Sheets
  */
 function getOrCreateSpreadsheet() {
-  // Kueri pencarian yang valid menggunakan format MIME type string Google Spreadsheet asli
-  const query = "name = '" + SPREADSHEET_NAME + "' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false";
-  const files = DriveApp.searchFiles(query);
+  const files = DriveApp.getFilesByName(SPREADSHEET_NAME);
+  let validSpreadsheet = null;
   
-  if (files.hasNext()) {
+  while (files.hasNext()) {
     const file = files.next();
+    // Memastikan file tidak berada di dalam sampah (trash) 
+    // dan memiliki tipe file Google Spreadsheet asli
+    if (!file.isTrashed() && file.getMimeType() === "application/vnd.google-apps.spreadsheet") {
+      validSpreadsheet = file;
+      break; // Temukan berkas aktif pertama yang cocok
+    }
+  }
+  
+  if (validSpreadsheet) {
     try {
-      return SpreadsheetApp.openById(file.getId());
+      return SpreadsheetApp.openById(validSpreadsheet.getId());
     } catch(e) {
       // Jika terjadi kegagalan langka saat membuka, buat yang baru sebagai fallback aman
       const ss = SpreadsheetApp.create(SPREADSHEET_NAME);
