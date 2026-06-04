@@ -3,8 +3,7 @@
  * Author: top8
  * Description: Menangani database spreadsheet secara otomatis, inisialisasi sheet, 
  * dan menyediakan API CRUD aman dengan validasi PIN.
- * * Update: Perbaikan pencarian file untuk menghindari error "Illegal spreadsheet id"
- * akibat membaca file sampah (trashed) atau tipe file non-spreadsheet.
+ * * Update: Perbaikan kueri pencarian file 'q' agar kompatibel dengan DriveApp.searchFiles()
  */
 
 // Nama Spreadsheet utama yang digunakan untuk menyimpan seluruh database aplikasi
@@ -16,8 +15,8 @@ const SPREADSHEET_NAME = "Nabung Emas DB";
  * @return {Spreadsheet} Spreadsheet dari Google Sheets
  */
 function getOrCreateSpreadsheet() {
-  // Query pencarian tangguh: mencocokkan nama, bertipe Google Sheets, dan tidak di dalam sampah
-  const query = "name = '" + SPREADSHEET_NAME + "' and mimeType = '" + MimeType.GOOGLE_SHEETS + "' and trashed = false";
+  // Kueri pencarian yang valid menggunakan format MIME type string Google Spreadsheet asli
+  const query = "name = '" + SPREADSHEET_NAME + "' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false";
   const files = DriveApp.searchFiles(query);
   
   if (files.hasNext()) {
