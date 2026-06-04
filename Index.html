@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Nabung Emas - Premium Dashboard</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sb: {
+              bg: '#000000',          
+              card: '#121212',        
+              border: '#222222',      
+              textMuted: '#888888',   
+              green: '#10b981',       
+              red: '#f43f5e',         
+              
+              lightBg: '#f5f7fb',      
+              lightCard: '#ffffff',    
+              lightBorder: '#e2e8f0',  
+              lightText: '#0f172a',    
+              lightTextMuted: '#64748b'
+            },
+            gold: {
+              50: '#fdfbeb', 100: '#fbf5c4', 200: '#f7ea89', 300: '#f2d64f',
+              400: '#ecbd21', 500: '#d9a214', 600: '#b87d0e', 700: '#93590e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none; 
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .pb-safe-bottom {
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .tab-page-transition {
+      transition: opacity 0.15s ease-in-out;
+    }
+
+    /* Efek getar untuk PIN salah */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.35s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-sb-lightBg text-sb-lightText dark:bg-sb-bg dark:text-slate-100 min-h-screen flex flex-col pb-28 transition-colors duration-200">
+
+  <!-- TOP HEADER -->
+  <header class="bg-white/80 dark:bg-sb-bg/80 backdrop-blur-md border-b border-sb-lightBorder dark:border-sb-border sticky top-0 z-40 transition-colors duration-200">
+    <div class="w-full max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- Logo 2 Emas Batangan Premium -->
+        <div class="w-9 h-9 bg-gradient-to-tr from-gold-600 to-gold-400 rounded-xl flex items-center justify-center shadow-md shadow-gold-500/10 flex-shrink-0">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Emas Batangan 1 (Bawah Kiri) -->
+            <path d="M2 17h12l2-5H4l-2 5z" fill="url(#logo-gold-light)" />
+            <path d="M2 17l1 4h12l1-4H2z" fill="url(#logo-gold-dark)" />
+            <path d="M14 17l2-5l1 4l-2 5z" fill="url(#logo-gold-mid)" />
+            
+            <!-- Emas Batangan 2 (Atas Kanan - Menumpuk) -->
+            <path d="M6 11h12l2-5H8l-2 5z" fill="url(#logo-gold-bright)" />
+            <path d="M6 11l1 4h12l1-4H6z" fill="url(#logo-gold-light)" />
+            <path d="M18 11l2-5l1 4l-2 5z" fill="url(#logo-gold-mid)" />
+
+            <!-- Defs Gradients untuk Efek Kilau Logam Emas -->
+            <defs>
+              <linearGradient id="logo-gold-bright" x1="6" y1="6" x2="20" y2="11" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fff5c4" />
+                <stop offset="50%" stop-color="#f2d64f" />
+                <stop offset="100%" stop-color="#d9a214" />
+              </linearGradient>
+              <linearGradient id="logo-gold-light" x1="2" y1="12" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#f7ea89" />
+                <stop offset="100%" stop-color="#b87d0e" />
+              </linearGradient>
+              <linearGradient id="logo-gold-mid" x1="14" y1="12" x2="17" y2="17" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#d9a214" />
+                <stop offset="100%" stop-color="#93590e" />
+              </linearGradient>
+              <linearGradient id="logo-gold-dark" x1="2" y1="17" x2="15" y2="21" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#b87d0e" />
+                <stop offset="100%" stop-color="#734207" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-sm text-slate-950 dark:text-white leading-tight">Nabung Emas</h1>
+          <p id="header-profile-label" class="text-[10px] font-semibold text-sb-lightTextMuted dark:text-sb-textMuted">by top8</p>
+        </div>
+      </div>
+      
+      <!-- Switch Tema -->
+      <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-sb-card border border-slate-200 dark:border-sb-border flex items-center justify-center text-slate-600 dark:text-gold-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+        <i id="theme-icon" data-lucide="moon" class="w-4.5 h-4.5"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- UTAMA -->
+  <main id="swipe-container" class="flex-1 w-full max-w-md mx-auto px-4 py-4 space-y-4 tab-page-transition">
+    
+    <!-- BANNER NOTIFIKASI TOAST -->
+    <div id="toast-banner" class="hidden fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50 transition-all duration-300 p-3.5 rounded-xl shadow-2xl flex items-center space-x-2.5 text-xs font-semibold">
+      <i data-lucide="info" class="w-4 h-4 flex-shrink-0" id="toast-icon"></i>
+      <span id="toast-message">Notifikasi</span>
+    </div>
+
+    <!-- ==================== TAB 1: HOME ==================== -->
+    <section id="page-home" class="space-y-4">
+
+      <!-- PORTFOLIO CARD -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-black text-white rounded-2xl p-5 shadow-xl relative overflow-hidden border border-slate-800/80 text-center">
+        <!-- Dekorasi latar belakang -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl"></div>
+        
+        <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Saldo Emas</p>
+        <h2 class="text-3xl font-black text-gold-300 mt-1" id="total-gramasi">0.00 <span class="text-sm font-normal text-slate-400">gr</span></h2>
+
+        <!-- GRID DETAIL DAN HARGA ACUAN -->
+        <div class="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-slate-800/80 text-[11px]">
+          <!-- KOLOM KIRI -->
+          <div class="border-r border-slate-800/50 pr-2 flex flex-col justify-between min-h-[58px]">
+            <div>
+              <span class="text-slate-400 block text-[9px] uppercase tracking-wider">Total Modal Beli</span>
+              <span class="font-extrabold mt-0.5 block text-slate-200 text-xs sm:text-sm" id="total-modal-beli">Rp 0</span>
+            </div>
+            <div class="mt-2 text-[8px] text-slate-400 font-medium tracking-wide">
+              Jual Toko: <span class="font-bold text-slate-200" id="lbl-harga-beli">Rp 0</span>
+            </div>
+          </div>
+
+          <!-- KOLOM KANAN -->
+          <div class="pl-2 flex flex-col justify-between min-h-[58px]">
+            <div>
+              <span class="text-slate-400 block text-[9px] uppercase tracking-wider">Est. Bersih Buyback</span>
+              <span class="font-extrabold mt-0.5 block text-gold-300 text-xs sm:text-sm" id="total-estimasi-buyback">Rp 0</span>
+            </div>
+            <div class="mt-2 text-[8px] text-slate-400 font-medium tracking-wide">
+              Buyback: <span class="font-bold text-amber-500 dark:text-gold-400" id="lbl-harga-buyback">Rp 0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BADGE RETURN -->
+        <div class="mt-4 pt-3.5 border-t border-slate-800/60 flex flex-col items-center justify-center space-y-1 text-[10px]">
+          <span class="text-slate-400">Total Return (P&L):</span>
+          <span id="pnl-badge" class="font-extrabold px-2.5 py-1 rounded text-xs">Rp 0 (0%)</span>
+        </div>
+      </div>
+
+      <!-- GRAFIK TREN HARGA EMAS -->
+      <div class="bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-2xl p-4 shadow-sm space-y-3">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="trending-up" class="w-4 h-4 text-gold-500"></i>
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-sb-textMuted">Tren Harga Emas (7 Hari Terakhir)</span>
+          </div>
+          <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded" id="trend-pct">+1.2%</span>
+        </div>
+        
+        <!-- SVG Sparkline Chart -->
+        <div class="h-20 w-full pt-2">
+          <svg class="w-full h-full overflow-visible" viewBox="0 0 300 70" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Area Fill -->
+            <path id="chart-area" d="M 0 70 L 0 50 L 50 48 L 100 55 L 150 40 L 200 35 L 250 25 L 300 15 L 300 70 Z" fill="url(#chart-grad)"/>
+            <!-- Line Path -->
+            <path id="chart-line" d="M 0 50 L 50 48 L 100 55 L 150 40 L 200 35 L 250 25 L 300 15" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Dots -->
+            <circle cx="300" cy="15" r="4.5" fill="#fbbf24" class="animate-pulse"/>
+          </svg>
+        </div>
+        <!-- Label Tanggal Sederhana -->
+        <div class="flex justify-between text-[8px] font-semibold text-slate-400 dark:text-slate-500 pt-1" id="chart-dates-label">
+          <span>H-6</span>
+          <span>H-3</span>
+          <span>Hari Ini</span>
+        </div>
+      </div>
+
+      <!-- KALKULATOR KONVERSI EMAS INSTAN -->
+      <div class="bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-2xl p-4 shadow-sm space-y-3">
+        <h4 class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-sb-textMuted flex items-center space-x-1.5">
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-gold-500"></i>
+          <span>Kalkulator Konversi Emas</span>
+        </h4>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Input Gram</label>
+            <div class="relative">
+              <input type="number" id="calc-gram" step="0.01" oninput="convertGramToRp()" placeholder="0.00" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-200 dark:border-sb-border rounded-xl pl-2.5 pr-7 py-2 text-xs font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-gold-500 focus:outline-none animate-none">
+              <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-extrabold text-slate-400">gr</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Input Rupiah</label>
+            <div class="relative">
+              <input type="number" id="calc-rp" oninput="convertRpToGram()" placeholder="Rp" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-200 dark:border-sb-border rounded-xl pl-6 pr-2.5 py-2 text-xs font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-gold-500 focus:outline-none animate-none">
+              <span class="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-extrabold text-slate-400">Rp</span>
+            </div>
+          </div>
+        </div>
+        <p class="text-[8px] text-slate-400 dark:text-slate-500 italic text-center" id="calc-info">
+          Dihitung berdasarkan Harga Jual Toko saat ini.
+        </p>
+      </div>
+
+      <!-- KARTU PENGINGAT ZAKAT -->
+      <div id="zakat-alert-card" class="hidden bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/10 border border-amber-200 dark:border-amber-900/30 rounded-2xl p-4 shadow-sm relative overflow-hidden transition-all duration-300">
+        <div class="absolute -right-6 -bottom-6 opacity-10 dark:opacity-5 text-amber-600 dark:text-amber-500">
+          <i data-lucide="heart" class="w-24 h-24"></i>
+        </div>
+        <div class="flex items-start space-x-3">
+          <div class="w-10 h-10 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i data-lucide="heart" class="w-5.5 h-5.5"></i>
+          </div>
+          <div class="flex-1 space-y-1">
+            <div class="flex justify-between items-center">
+              <h4 class="text-xs font-extrabold text-amber-900 dark:text-amber-300 uppercase tracking-wider">Kewajiban Zakat Emas</h4>
+              <span class="text-[8px] bg-amber-500/20 text-amber-800 dark:text-amber-300 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Wajib Zakat</span>
+            </div>
+            <p class="text-[10px] text-amber-800 dark:text-amber-400 leading-relaxed">
+              Saldo emas Anda telah mencapai nishab (<span class="font-bold" id="zakat-nishab-val">0</span> gr). Anda wajib mengeluarkan zakat mal sebesar <span class="font-bold" id="zakat-rate-val">2.5%</span> pertahun.
+            </p>
+            <div class="pt-2 border-t border-amber-200/50 dark:border-amber-900/20 mt-2 grid grid-cols-2 gap-2 text-[10px]">
+              <div>
+                <span class="text-amber-700/80 dark:text-amber-500/70 block text-[8px] uppercase">Zakat Wajib (Gram)</span>
+                <span class="font-black text-amber-900 dark:text-amber-300 block text-xs" id="zakat-gram-amount">0.00 gr</span>
+              </div>
+              <div>
+                <span class="text-amber-700/80 dark:text-amber-500/70 block text-[8px] uppercase">Setara Nominal (<span id="zakat-ref-label">Jual Toko</span>)</span>
+                <span class="font-black text-amber-900 dark:text-amber-300 block text-xs" id="zakat-rupiah-amount">Rp 0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALOKASI TARGET TABUNGAN -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center px-0.5">
+          <h3 class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-sb-textMuted flex items-center space-x-1.5">
+            <i data-lucide="target" class="w-3.5 h-3.5"></i>
+            <span>Alokasi Target Tabungan</span>
+          </h3>
+          <button onclick="openModalAddGoal()" class="text-[10px] font-extrabold text-emerald-700 dark:text-sb-green flex items-center space-x-0.5 hover:underline">
+            <i data-lucide="plus" class="w-3 h-3"></i>
+            <span>Target Baru</span>
+          </button>
+        </div>
+        <div class="space-y-3" id="goals-container"></div>
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 2: TRANSAKSI ==================== -->
+    <section id="page-transaksi" class="space-y-4 hidden">
+      <div class="bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-xl p-4 shadow-sm">
+        <h3 class="font-extrabold text-slate-950 dark:text-white text-xs+ mb-3">Input Transaksi Baru</h3>
+        
+        <form id="tx-form" onsubmit="handleFormTransaksi(event)" class="space-y-3">
+          <div>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" id="btn-tipe-beli" onclick="setTipeTx('Beli')" class="py-2.5 rounded-xl font-bold text-xs transition-all border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600">Beli Emas</button>
+              <button type="button" id="btn-tipe-jual" onclick="setTipeTx('Jual')" class="py-2.5 rounded-xl font-semibold text-xs transition-all border border-slate-300 dark:border-sb-border text-slate-600 dark:text-slate-400 bg-white dark:bg-transparent">Jual / Buyback</button>
+            </div>
+            <input type="hidden" id="tx-tipe" value="Beli">
+          </div>
+
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Pilih Alokasi Target</label>
+            <select id="tx-goal" class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none"></select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Gramasi (gr)</label>
+              <input type="number" step="0.01" id="tx-gram" required oninput="hitungTotalTx()" placeholder="0.00" class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Harga per Gram</label>
+              <input type="number" id="tx-harga" required oninput="hitungTotalTx()" placeholder="Rp" class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-100 dark:bg-sb-bg rounded-xl border border-slate-200 dark:border-sb-border flex justify-between items-center text-[11px]">
+            <div>
+              <span class="text-[8px] text-slate-500 dark:text-slate-400 block font-bold uppercase">Total Nilai</span>
+              <span class="font-black text-xs+ text-slate-950 dark:text-white" id="tx-total-label">Rp 0</span>
+              <input type="hidden" id="tx-total-val" value="0">
+            </div>
+            <button type="button" onclick="gunakanHargaSesuaiSetting()" class="text-[9px] font-extrabold bg-white dark:bg-sb-border border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Gunakan Setting</button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Tanggal</label>
+              <input type="date" id="tx-tanggal" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2 py-1.5 text-xs text-slate-900 dark:text-white font-bold">
+            </div>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Catatan</label>
+              <input type="text" id="tx-catatan" placeholder="Keterangan" class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow-md transition-colors">Simpan Catatan Transaksi</button>
+        </form>
+      </div>
+
+      <!-- RIWAYAT TRANSAKSI -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center px-0.5">
+          <h3 class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-sb-textMuted flex items-center space-x-1.5">
+            <i data-lucide="history" class="w-3.5 h-3.5"></i>
+            <span>Aktivitas & Riwayat Transaksi</span>
+          </h3>
+          <!-- Filter Sederhana -->
+          <div class="flex space-x-1 text-[9px] font-extrabold">
+            <button id="filter-all" onclick="filterTransactions('All')" class="px-2 py-1 rounded bg-slate-200 dark:bg-sb-border text-slate-800 dark:text-white">Semua</button>
+            <button id="filter-beli" onclick="filterTransactions('Beli')" class="px-2 py-1 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Beli</button>
+            <button id="filter-jual" onclick="filterTransactions('Jual')" class="px-2 py-1 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Jual</button>
+          </div>
+        </div>
+
+        <!-- Input Pencarian -->
+        <div class="relative">
+          <input type="text" id="tx-search" oninput="renderAll()" placeholder="Cari catatan transaksi..." class="w-full bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-900 dark:text-white focus:outline-none">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2"></i>
+        </div>
+
+        <div class="bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-xl overflow-hidden shadow-sm divide-y divide-slate-100 dark:divide-sb-border max-h-[340px] overflow-y-auto no-scrollbar no-swipe-zone" id="tx-history-container"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: PENGATURAN ==================== -->
+    <section id="page-setting" class="space-y-4 hidden">
+      
+      <!-- DATA SPREADSHEET -->
+      <div id="ss-link-banner" class="hidden bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 p-3.5 rounded-xl flex items-center justify-between text-[11px]">
+        <div class="flex items-center space-x-2 text-emerald-900 dark:text-emerald-400">
+          <i data-lucide="database" class="w-4 h-4"></i>
+          <span class="font-semibold text-slate-800 dark:text-slate-300">Data tersimpan di Google Sheet!</span>
+        </div>
+        <button onclick="requestSpreadsheetAccess()" class="font-extrabold text-emerald-700 dark:text-emerald-300 underline flex items-center space-x-1 focus:outline-none hover:text-emerald-800 dark:hover:text-emerald-200 transition-colors">
+          <span>Buka</span>
+          <i data-lucide="external-link" class="w-3 h-3"></i>
+        </button>
+      </div>
+
+      <div class="bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-xl p-4 shadow-sm">
+        <h3 class="font-extrabold text-slate-950 dark:text-white text-xs+ mb-3 pb-2 border-b border-slate-200 dark:border-sb-border">Konfigurasi Parameter</h3>
+        
+        <form id="setting-form" onsubmit="handleFormSettings(event)" class="space-y-3.5">
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Harga Jual (Rp/gr)</label>
+              <input type="number" id="set-harga-beli" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Harga Buyback (Rp/gr)</label>
+              <input type="number" id="set-harga-buyback" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">PPh 22 (%)</label>
+              <input type="number" step="0.01" id="set-pph" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Biaya Meterai (Rp)</label>
+              <input type="number" id="set-materai" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <!-- KELOMPOK PENGATURAN INTEGRASI ZAKAT -->
+          <div class="p-3 bg-amber-500/5 dark:bg-amber-500/2 rounded-xl border border-amber-500/10 dark:border-amber-500/5 space-y-3">
+            <span class="block text-[9px] font-extrabold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Kalkulasi Zakat Emas</span>
+            
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Nishab Zakat (gr)</label>
+                <input type="number" step="0.01" id="set-zakat-nishab" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Kadar Zakat (%)</label>
+                <input type="number" step="0.01" id="set-zakat-rate" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Acuan Harga Konversi Zakat</label>
+              <select id="set-zakat-price-ref" class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                <option value="beli">Harga Jual Toko</option>
+                <option value="buyback">Harga Buyback</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Batas Minimal Transaksi Meterai (Rp)</label>
+            <input type="number" id="set-batas-materai" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+          </div>
+
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Nama Pemilik Profil</label>
+            <input type="text" id="set-profile-label" required class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-bold text-slate-900 dark:text-white">
+          </div>
+
+          <div class="pt-2.5 border-t border-slate-200 dark:border-sb-border/40">
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Ubah PIN Aplikasi (4 Digit)</label>
+            <input type="password" id="set-new-pin" required maxlength="4" placeholder="Tetapkan PIN Baru" class="w-full bg-white dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+          </div>
+
+          <button type="submit" class="w-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-950 hover:bg-slate-800 font-extrabold py-2.5 rounded-xl text-xs transition-all shadow-md">Simpan Parameter Baru</button>
+        </form>
+      </div>
+
+      <div class="bg-white dark:bg-sb-card border border-sb-lightBorder dark:border-sb-border rounded-xl p-3 shadow-sm text-center">
+        <button onclick="confirmResetApp()" class="text-xs font-bold text-rose-600 border border-rose-300 dark:border-rose-500/20 bg-rose-50 hover:bg-rose-100/60 dark:bg-rose-500/5 px-4 py-2.5 rounded-xl w-full transition-colors">Reset Seluruh Data Aplikasi</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- POPUP: TAMBAH TARGET -->
+  <div id="modal-add-goal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-sb-card border border-slate-200 dark:border-sb-border rounded-2xl max-w-[340px] w-full p-4 space-y-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex justify-between items-center">
+        <h3 class="font-extrabold text-xs+ text-slate-950 dark:text-white">Target Nabung Baru</h3>
+        <button onclick="closeModalAddGoal()" class="text-slate-500 dark:text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="goal-form" onsubmit="handleFormGoal(event)" class="space-y-3">
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Nama Target</label>
+          <input type="text" id="goal-nama" required placeholder="Contoh: Tabungan Umroh" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs text-slate-900 dark:text-white">
+        </div>
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Target Emas (gr)</label>
+          <input type="number" step="0.01" id="goal-target" required placeholder="50" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-bold text-slate-900 dark:text-white">
+        </div>
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Warna Tema</label>
+          <div class="flex flex-wrap gap-1.5" id="new-color-picker">
+            <button type="button" onclick="selectColorNew('bg-blue-500', this)" class="color-btn-new w-6 h-6 rounded-full bg-blue-500 ring-2 ring-offset-2 ring-blue-500"></button>
+            <button type="button" onclick="selectColorNew('bg-emerald-500', this)" class="color-btn-new w-6 h-6 rounded-full bg-emerald-500"></button>
+            <button type="button" onclick="selectColorNew('bg-amber-500', this)" class="color-btn-new w-6 h-6 rounded-full bg-amber-500"></button>
+            <button type="button" onclick="selectColorNew('bg-purple-500', this)" class="color-btn-new w-6 h-6 rounded-full bg-purple-500"></button>
+            <button type="button" onclick="selectColorNew('bg-rose-500', this)" class="color-btn-new w-6 h-6 rounded-full bg-rose-500"></button>
+          </div>
+          <input type="hidden" id="goal-color" value="bg-blue-500">
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 text-white font-extrabold py-2.5 rounded-xl text-xs">Buat Target</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- POPUP: EDITOR TARGET TABUNGAN -->
+  <div id="modal-edit-goal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-sb-card border border-slate-200 dark:border-sb-border rounded-2xl max-w-[340px] w-full p-4 space-y-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex justify-between items-center">
+        <h3 class="font-extrabold text-xs+ text-slate-950 dark:text-white">Edit Target Tabungan</h3>
+        <button onclick="closeModalEditGoal()" class="text-slate-500 dark:text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="edit-goal-form" onsubmit="handleUpdateGoal(event)" class="space-y-3">
+        <input type="hidden" id="edit-goal-id">
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Nama Target</label>
+          <input type="text" id="edit-goal-nama" required class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs text-slate-900 dark:text-white font-bold">
+        </div>
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Target Emas (gr)</label>
+          <input type="number" step="0.01" id="edit-goal-target" required class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+        </div>
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Warna Tema</label>
+          <div class="flex flex-wrap gap-1.5" id="edit-color-picker">
+            <button type="button" onclick="selectColorEdit('bg-blue-500', this)" class="color-btn-edit w-6 h-6 rounded-full bg-blue-500"></button>
+            <button type="button" onclick="selectColorEdit('bg-emerald-500', this)" class="color-btn-edit w-6 h-6 rounded-full bg-emerald-500"></button>
+            <button type="button" onclick="selectColorEdit('bg-amber-500', this)" class="color-btn-edit w-6 h-6 rounded-full bg-amber-500"></button>
+            <button type="button" onclick="selectColorEdit('bg-purple-500', this)" class="color-btn-edit w-6 h-6 rounded-full bg-purple-500"></button>
+            <button type="button" onclick="selectColorEdit('bg-rose-500', this)" class="color-btn-edit w-6 h-6 rounded-full bg-rose-500"></button>
+          </div>
+          <input type="hidden" id="edit-goal-color">
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button type="button" onclick="triggerDeleteGoalConfirm()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs py-2 rounded-xl font-bold flex items-center justify-center space-x-0.5 border border-rose-200">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Hapus</span>
+          </button>
+          <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-xs">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- POPUP: EDITOR RIWAYAT TRANSAKSI -->
+  <div id="modal-edit-tx" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-sb-card border border-slate-200 dark:border-sb-border rounded-2xl max-w-[340px] w-full p-4 space-y-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex justify-between items-center">
+        <h3 class="font-extrabold text-xs+ text-slate-950 dark:text-white">Edit Catatan Transaksi</h3>
+        <button onclick="closeModalEditTx()" class="text-slate-500 dark:text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="edit-tx-form" onsubmit="handleUpdateTx(event)" class="space-y-3">
+        <input type="hidden" id="edit-tx-id">
+        <input type="hidden" id="edit-tx-tipe">
+        
+        <div>
+          <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Alokasi Target</label>
+          <select id="edit-tx-goal" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-bold text-slate-900 dark:text-white"></select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Gramasi (gr)</label>
+            <input type="number" step="0.01" id="edit-tx-gram" required oninput="hitungTotalEditTx()" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+          </div>
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Harga/Gram</label>
+            <input type="number" id="edit-tx-harga" required oninput="hitungTotalEditTx()" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs font-black text-slate-900 dark:text-white">
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-100 dark:bg-sb-bg rounded-xl border border-slate-200 dark:border-sb-border flex justify-between items-center text-xs">
+          <div>
+            <span class="text-[8px] text-slate-500 dark:text-slate-400 block font-bold uppercase">Total Nilai</span>
+            <span class="font-black text-xs+ text-slate-950 dark:text-white" id="edit-tx-total-label">Rp 0</span>
+            <input type="hidden" id="edit-tx-total-val">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Tanggal</label>
+            <input type="date" id="edit-tx-tanggal" required class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2 py-1.5 text-xs text-slate-900 dark:text-white font-bold">
+          </div>
+          <div>
+            <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Catatan</label>
+            <input type="text" id="edit-tx-catatan" class="w-full bg-slate-50 dark:bg-sb-bg border border-slate-300 dark:border-sb-border rounded-xl px-2.5 py-2 text-xs text-slate-900 dark:text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button type="button" onclick="triggerDeleteTxConfirm()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs py-2 rounded-xl font-bold flex items-center justify-center space-x-0.5 border border-rose-200">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Hapus</span>
+          </button>
+          <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-xs">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MASTER MODAL: SECURITY PIN CHALLENGE -->
+  <div id="modal-security-challenge" class="hidden fixed inset-0 z-[100] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div id="challenge-modal-card" class="bg-white dark:bg-sb-card border border-slate-200 dark:border-sb-border rounded-2xl max-w-[280px] w-full p-4 text-center space-y-3 shadow-2xl transition-all duration-200">
+      <div class="mx-auto w-9 h-9 bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 rounded-full flex items-center justify-center animate-pulse">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <h4 class="font-extrabold text-xs+ text-slate-950 dark:text-white">Otorisasi PIN Keamanan</h4>
+        <p class="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5">Masukkan 4 digit PIN Anda.</p>
+      </div>
+
+      <div>
+        <input type="password" id="challenge-pin" maxlength="4" placeholder="••••" oninput="clearInlineError()" class="w-full bg-slate-50 dark:bg-sb-bg text-center p-2 rounded-xl font-extrabold tracking-[0.5em] text-base border border-slate-300 dark:border-sb-border focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white focus:outline-none transition-colors">
+        
+        <!-- INLINE ERROR MESSAGE PLACEHOLDER -->
+        <div id="challenge-error-msg" class="hidden text-[10px] text-rose-600 dark:text-rose-400 font-extrabold mt-2 bg-rose-500/10 py-1.5 px-3 rounded-xl border border-rose-500/20 flex items-center justify-center space-x-1.5">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-500"></i>
+          <span>PIN salah! Akses ditolak.</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="cancelSecurityChallenge()" class="bg-slate-100 dark:bg-sb-bg text-xs py-2 rounded-xl font-extrabold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">Batal</button>
+        <button onclick="submitSecurityChallenge()" class="bg-emerald-600 text-white text-xs py-2 rounded-xl font-extrabold">Otorisasi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: CONFIRM GENERAL (MENGGANTIKAN WINDOW.CONFIRM) -->
+  <div id="modal-general-confirm" class="hidden fixed inset-0 z-[90] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-sb-card p-5 rounded-2xl max-w-[300px] w-full text-center space-y-3.5 shadow-2xl border border-slate-200 dark:border-sb-border">
+      <div class="mx-auto w-10 h-10 bg-rose-500/10 text-rose-600 rounded-full flex items-center justify-center">
+        <i data-lucide="alert-triangle" class="w-5.5 h-5.5"></i>
+      </div>
+      <div>
+        <h4 class="font-extrabold text-sm text-slate-900 dark:text-white" id="gconfirm-title">Konfirmasi Aksi</h4>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed" id="gconfirm-message">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="closeGeneralConfirm(false)" class="bg-slate-100 dark:bg-sb-bg text-xs py-2 rounded-xl font-extrabold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">Batal</button>
+        <button onclick="closeGeneralConfirm(true)" class="bg-rose-600 text-white text-xs py-2 rounded-xl font-extrabold hover:bg-rose-700 transition-colors">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: CONFIRM RESET -->
+  <div id="modal-confirm" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div id="modal-confirm-card" class="bg-white dark:bg-sb-card p-4 rounded-2xl max-w-[280px] w-full text-center space-y-2.5 shadow-2xl border border-slate-200 dark:border-sb-border transition-all duration-200">
+      <h4 class="font-extrabold text-xs+ text-rose-600">Konfirmasi Reset</h4>
+      <p class="text-[10px] text-slate-500 dark:text-slate-400">Masukkan PIN Anda untuk menghapus data.</p>
+      
+      <div>
+        <input type="password" id="confirm-pin" maxlength="4" placeholder="••••" oninput="clearResetInlineError()" class="w-full bg-slate-100 dark:bg-sb-bg text-slate-900 dark:text-white text-center p-2 rounded-xl font-bold tracking-widest text-xs border border-slate-300 dark:border-sb-border focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
+        
+        <!-- INLINE ERROR UNTUK RESET DATA -->
+        <div id="confirm-error-msg" class="hidden text-[10px] text-rose-600 dark:text-rose-400 font-extrabold mt-2 bg-rose-500/10 py-1.5 px-3 rounded-xl border border-rose-500/20 flex items-center justify-center space-x-1.5">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-500"></i>
+          <span>PIN salah! Otorisasi gagal.</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="closeModalConfirm()" class="bg-slate-100 dark:bg-sb-bg text-xs py-1.5 rounded-xl font-bold text-slate-700 dark:text-slate-300">Batal</button>
+        <button onclick="executeReset()" class="bg-rose-600 text-white text-xs py-1.5 rounded-xl font-bold">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BOTTOM MENU -->
+  <nav class="bg-white dark:bg-sb-bg border-t border-sb-lightBorder dark:border-sb-border fixed bottom-0 left-0 right-0 z-50 transition-colors duration-200 pb-safe-bottom shadow-[0_-4px_24px_rgba(0,0,0,0.08)] transform-gpu">
+    <div class="w-full max-w-md mx-auto flex items-center justify-around py-3 px-2">
+      <!-- Menu Transaksi -->
+      <button onclick="switchTab('transaksi')" id="nav-nav-transaksi" class="flex flex-col items-center space-y-1 text-slate-500 dark:text-slate-400 font-bold transition-transform">
+        <i data-lucide="arrow-left-right" class="w-4.5 h-4.5"></i><span class="text-[10px]">Transaksi</span>
+      </button>
+      
+      <!-- Menu Home -->
+      <button onclick="switchTab('home')" id="nav-nav-home" class="flex flex-col items-center space-y-1 text-emerald-600 dark:text-emerald-500 font-extrabold transition-transform scale-105">
+        <i data-lucide="home" class="w-4.5 h-4.5"></i><span class="text-[10px]">Home</span>
+      </button>
+
+      <!-- Menu Pengaturan -->
+      <button onclick="switchTab('setting')" id="nav-nav-setting" class="flex flex-col items-center space-y-1 text-slate-500 dark:text-slate-400 font-bold transition-transform">
+        <i data-lucide="settings-2" class="w-4.5 h-4.5"></i><span class="text-[10px]">Pengaturan</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- SCRIPT UTAMA INTERAKSI -->
+  <script>
+    let appData = { settings: {}, goals: [], transactions: [] };
+    let pendingAction = null;
+    let spreadsheetUrl = ""; 
+
+    // Variabel state global untuk sistem deteksi gestur geser (Swipe Tab)
+    let currentTab = "home";
+    const tabOrder = ["transaksi", "home", "setting"];
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    // Filter transaksi global
+    let currentFilter = "All";
+
+    // Callbacks untuk sistem konfirmasi kustom
+    let generalConfirmCallback = null;
+
+    window.onload = function() {
+      lucide.createIcons();
+      setDefaultDate();
+      loadDataFromGAS();
+      setupSwipeNavigation();
+      initSparklineMockData();
+    };
+
+    /**
+     * Inisialisasi label tanggal dinamis pada chart trend
+     */
+    function initSparklineMockData() {
+      const datesLabelContainer = document.getElementById('chart-dates-label');
+      const today = new Date();
+      const options = { day: 'numeric', month: 'short' };
+      const h6 = new Date(today); h6.setDate(today.getDate() - 6);
+      const h3 = new Date(today); h3.setDate(today.getDate() - 3);
+
+      datesLabelContainer.innerHTML = `
+        <span>${h6.toLocaleDateString('id-ID', options)}</span>
+        <span>${h3.toLocaleDateString('id-ID', options)}</span>
+        <span>Hari Ini</span>
+      `;
+    }
+
+    /**
+     * Konfigurasi sistem navigasi swipe gestur di mobile browser
+     */
+    function setupSwipeNavigation() {
+      const container = document.getElementById('swipe-container');
+      
+      container.addEventListener('touchstart', function(e) {
+        if (e.target.closest('.no-swipe-zone') || e.target.closest('input') || e.target.closest('select') || e.target.closest('button')) {
+          touchStartX = 0;
+          touchStartY = 0;
+          return;
+        }
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      container.addEventListener('touchend', function(e) {
+        if (touchStartX === 0) return;
+        
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        
+        handleSwipeGesture();
+      }, { passive: true });
+    }
+
+    /**
+     * Algoritma evaluasi arah usapan gestur layar
+     */
+    function handleSwipeGesture() {
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      const swipeThresholdWidth = 70;
+      const swipeLimitRatio = 1.3; 
+
+      if (Math.abs(deltaX) > swipeThresholdWidth && Math.abs(deltaX) > Math.abs(deltaY) * swipeLimitRatio) {
+        let currentIdx = tabOrder.indexOf(currentTab);
+        
+        if (deltaX < 0) {
+          if (currentIdx < tabOrder.length - 1) {
+            let nextTab = tabOrder[currentIdx + 1];
+            switchTab(nextTab);
+          }
+        } else {
+          if (currentIdx > 0) {
+            let prevTab = tabOrder[currentIdx - 1];
+            switchTab(prevTab);
+          }
+        }
+      }
+    }
+
+    /**
+     * Sistem Konfirmasi Modal Pengganti Confirm Browser
+     */
+    function showCustomConfirm(title, message, callback) {
+      document.getElementById('gconfirm-title').innerText = title;
+      document.getElementById('gconfirm-message').innerText = message;
+      generalConfirmCallback = callback;
+      document.getElementById('modal-general-confirm').classList.remove('hidden');
+    }
+
+    function closeGeneralConfirm(result) {
+      document.getElementById('modal-general-confirm').classList.add('hidden');
+      if (generalConfirmCallback) {
+        generalConfirmCallback(result);
+        generalConfirmCallback = null;
+      }
+    }
+
+    /**
+     * KALKULATOR EMAS INSTAN
+     */
+    function convertGramToRp() {
+      const gr = parseFloat(document.getElementById('calc-gram').value) || 0;
+      const price = appData.settings.hargaBeli || 0;
+      const rpEl = document.getElementById('calc-rp');
+      
+      if (gr === 0) {
+        rpEl.value = "";
+        return;
+      }
+      rpEl.value = Math.round(gr * price);
+    }
+
+    function convertRpToGram() {
+      const rp = parseFloat(document.getElementById('calc-rp').value) || 0;
+      const price = appData.settings.hargaBeli || 0;
+      const grEl = document.getElementById('calc-gram');
+      
+      if (rp === 0 || price === 0) {
+        grEl.value = "";
+        return;
+      }
+      grEl.value = (rp / price).toFixed(2);
+    }
+
+    function loadDataFromGAS() {
+      if (typeof google === 'undefined' || !google.script) {
+        appData = {
+          settings: { 
+            hargaBeli: 2774000, 
+            hargaBuyback: 2584000, 
+            pph22Percent: 0.45, 
+            biayaMaterai: 10000, 
+            batasMaterai: 10000000, 
+            pin: "1234", 
+            theme: "dark", 
+            profileLabel: "by top8",
+            zakatNishab: 85.00,       
+            zakatRate: 2.5,          
+            zakatPriceRef: "beli"    
+          },
+          goals: [
+            { id: "g1", nama: "Haji", targetGram: 40, warna: "bg-blue-500" },
+            { id: "g2", nama: "Pendidikan Anak", targetGram: 40, warna: "bg-emerald-500" }
+          ],
+          transactions: [
+            { id: "t1", tanggal: "2026-05-10", tipe: "Beli", gram: 28.00, hargaSatuan: 1758130, totalRp: 49227652, goalId: "g1", catatan: "Modal Haji" },
+            { id: "t2", tanggal: "2026-05-25", tipe: "Beli", gram: 4.00, hargaSatuan: 2907500, totalRp: 11630000, goalId: "g2", catatan: "Pendidikan Anak" }
+          ]
+        };
+        spreadsheetUrl = "https://docs.google.com/spreadsheets"; 
+        document.getElementById('ss-link-banner').classList.remove('hidden');
+        applyTheme(appData.settings.theme);
+        renderAll();
+        return;
+      }
+
+      google.script.run
+        .withFailureHandler(function(err) {
+          showToast("Gagal mengambil data: " + err.message, "error");
+        })
+        .withSuccessHandler(function(response) {
+          appData = response;
+          if (appData.settings.zakatNishab === undefined) appData.settings.zakatNishab = 85.00;
+          if (appData.settings.zakatRate === undefined) appData.settings.zakatRate = 2.5;
+          if (appData.settings.zakatPriceRef === undefined) appData.settings.zakatPriceRef = "beli";
+          
+          applyTheme(appData.settings.theme);
+          renderAll();
+          
+          if (response.spreadsheetUrl) {
+            spreadsheetUrl = response.spreadsheetUrl; 
+            document.getElementById('ss-link-banner').classList.remove('hidden');
+          }
+        })
+        .getAppData();
+    }
+
+    function requestSpreadsheetAccess() {
+      triggerSecurityChallenge(function(verifiedPin) {
+        if (spreadsheetUrl) {
+          window.open(spreadsheetUrl, '_blank');
+          showToast("Membuka database Spreadsheet...");
+        } else {
+          showToast("Tautan database tidak ditemukan.", "error");
+        }
+      });
+    }
+
+    function filterTransactions(type) {
+      currentFilter = type;
+      const filters = ["All", "Beli", "Jual"];
+      filters.forEach(f => {
+        const btn = document.getElementById('filter-' + f.toLowerCase());
+        if (f === type) {
+          btn.className = "px-2 py-1 rounded bg-slate-200 dark:bg-sb-border text-slate-800 dark:text-white";
+        } else {
+          btn.className = "px-2 py-1 rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800";
+        }
+      });
+      renderAll();
+    }
+
+    function renderAll() {
+      document.getElementById('header-profile-label').innerText = appData.settings.profileLabel || "by top8";
+      document.getElementById('lbl-harga-beli').innerText = formatRupiah(appData.settings.hargaBeli);
+      document.getElementById('lbl-harga-buyback').innerText = formatRupiah(appData.settings.hargaBuyback);
+
+      let totalGram = 0; let totalModal = 0;
+      appData.transactions.forEach(tx => { 
+        totalGram += tx.gram; 
+        totalModal += tx.totalRp; 
+      });
+      if (totalGram < 0) totalGram = 0; if (totalModal < 0) totalModal = 0;
+
+      let kotorBuyback = totalGram * appData.settings.hargaBuyback;
+      let pph22 = kotorBuyback * (appData.settings.pph22Percent / 100);
+      let meterai = (kotorBuyback > appData.settings.batasMaterai) ? appData.settings.biayaMaterai : 0;
+      let bersihBuyback = kotorBuyback - pph22 - meterai;
+      if (bersihBuyback < 0) bersihBuyback = 0;
+
+      document.getElementById('total-gramasi').innerHTML = `${totalGram.toFixed(2)} <span class="text-xs font-normal text-slate-500 dark:text-slate-400">gr</span>`;
+      document.getElementById('total-modal-beli').innerText = formatRupiah(totalModal);
+      document.getElementById('total-estimasi-buyback').innerText = formatRupiah(Math.round(bersihBuyback));
+
+      let pnl = bersihBuyback - totalModal;
+      let pnlPercent = totalModal > 0 ? (pnl / totalModal) * 100 : 0;
+      const pnlEl = document.getElementById('pnl-badge');
+      if (pnl >= 0) {
+        pnlEl.className = "font-extrabold px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-200/50 dark:border-transparent text-[10px]";
+        pnlEl.innerText = `+${formatRupiah(Math.round(pnl))} (+${pnlPercent.toFixed(1)}%)`;
+      } else {
+        pnlEl.className = "font-extrabold px-1.5 py-0.5 rounded text-rose-800 dark:text-rose-400 bg-rose-100 dark:bg-rose-500/10 border border-rose-200/50 dark:border-transparent text-[10px]";
+        pnlEl.innerText = `${formatRupiah(Math.round(pnl))} (${pnlPercent.toFixed(1)}%)`;
+      }
+
+      // ================= LOGIKA EVALUASI ZAKAT EMAS =================
+      const zakatNishab = parseFloat(appData.settings.zakatNishab) || 85.00;
+      const zakatRate = parseFloat(appData.settings.zakatRate) || 2.5;
+      const priceRefType = appData.settings.zakatPriceRef || "beli";
+      const alertCard = document.getElementById('zakat-alert-card');
+      
+      if (totalGram >= zakatNishab) {
+        const zakatGram = totalGram * (zakatRate / 100);
+        
+        let refPrice = appData.settings.hargaBeli;
+        let refLabel = "Jual Toko";
+        if (priceRefType === "buyback") {
+          refPrice = appData.settings.hargaBuyback;
+          refLabel = "Buyback";
+        }
+        
+        const zakatRupiah = zakatGram * refPrice;
+
+        document.getElementById('zakat-nishab-val').innerText = zakatNishab.toFixed(2);
+        document.getElementById('zakat-rate-val').innerText = zakatRate + '%';
+        document.getElementById('zakat-gram-amount').innerText = `${zakatGram.toFixed(3)} gr`;
+        document.getElementById('zakat-ref-label').innerText = refLabel;
+        document.getElementById('zakat-rupiah-amount').innerText = formatRupiah(Math.round(zakatRupiah));
+        
+        alertCard.classList.remove('hidden');
+      } else {
+        alertCard.classList.add('hidden');
+      }
+      // ==============================================================
+
+      const container = document.getElementById('goals-container');
+      container.innerHTML = '';
+      
+      appData.goals.forEach(goal => {
+        let gGram = 0; let gModal = 0;
+        appData.transactions.forEach(t => { if (t.goalId === goal.id) { gGram += t.gram; gModal += t.totalRp; } });
+        if (gGram < 0) gGram = 0; if (gModal < 0) gModal = 0;
+
+        let gKotor = gGram * appData.settings.hargaBuyback;
+        let gPph = gKotor * (appData.settings.pph22Percent / 100);
+        let gMeterai = (gKotor > appData.settings.batasMaterai) ? appData.settings.biayaMaterai : 0;
+        let gBersih = gKotor - gPph - gMeterai;
+
+        let pct = goal.targetGram > 0 ? (gGram / goal.targetGram) * 100 : 0;
+        if (pct > 100) pct = 100;
+
+        const div = document.createElement('div');
+        div.className = "bg-white dark:bg-sb-card border border-slate-200 dark:border-sb-border rounded-xl p-3.5 shadow-sm space-y-2";
+        div.innerHTML = `
+          <div class="flex justify-between items-center text-[11px] font-black">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full ${goal.warna || 'bg-blue-500'}"></span>
+              <span class="text-slate-900 dark:text-slate-200 truncate max-w-[150px]">${goal.nama}</span>
+            </div>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-emerald-700 dark:text-emerald-400 font-extrabold">${pct.toFixed(0)}%</span>
+              <button onclick="openModalEditGoal('${goal.id}')" class="text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 p-0.5">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+          <div class="w-full h-1.5 bg-slate-100 dark:bg-sb-bg rounded-full overflow-hidden">
+            <div class="h-full ${goal.warna || 'bg-emerald-500'} rounded-full" style="width: ${pct}%"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-500 dark:text-sb-textMuted pt-1.5 border-t border-slate-100 dark:border-sb-border/30">
+            <span>Modal: <b>${formatRupiah(gModal)}</b> (${gGram.toFixed(2)}g / <span class="font-bold text-slate-800 dark:text-slate-300">${goal.targetGram.toFixed(2)}g</span>)</span>
+            <span>Est: <b class="text-amber-700 dark:text-gold-400">${formatRupiah(Math.round(gBersih))}</b></span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      const sel = document.getElementById('tx-goal');
+      const editSel = document.getElementById('edit-tx-goal');
+      const optionHtml = appData.goals.map(g => `<option value="${g.id}">${g.nama}</option>`).join('');
+      sel.innerHTML = '<option value="">Umum (Tanpa Target)</option>' + optionHtml;
+      editSel.innerHTML = '<option value="">Umum (Tanpa Target)</option>' + optionHtml;
+
+      const hist = document.getElementById('tx-history-container');
+      hist.innerHTML = '';
+      
+      const searchKeyword = document.getElementById('tx-search').value.toLowerCase();
+      
+      // Filter & Search Logic
+      let filteredTx = [...appData.transactions];
+      if (currentFilter !== "All") {
+        filteredTx = filteredTx.filter(t => t.tipe === currentFilter);
+      }
+      if (searchKeyword.trim() !== "") {
+        filteredTx = filteredTx.filter(t => (t.catatan || "").toLowerCase().includes(searchKeyword));
+      }
+
+      const sortedTransactions = filteredTx.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+      if (sortedTransactions.length === 0) {
+        hist.innerHTML = '<div class="p-4 text-center text-[11px] text-slate-500">Belum ada riwayat transaksi.</div>';
+      } else {
+        sortedTransactions.forEach(t => {
+          const isBeli = t.tipe === "Beli";
+          const targetGoal = appData.goals.find(g => g.id === t.goalId);
+          const goalName = targetGoal ? targetGoal.nama : "Umum";
+
+          hist.innerHTML += `
+            <div class="p-3 flex justify-between items-center text-[11px] hover:bg-slate-100 dark:hover:bg-slate-800/20 transition-colors">
+              <div class="min-w-0 flex-1 pr-2">
+                <div class="flex items-center space-x-1.5">
+                  <span class="font-extrabold ${isBeli ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700'}">${t.tipe}</span>
+                  <span class="text-[8px] px-1 bg-slate-200 dark:bg-sb-bg text-slate-700 dark:text-slate-400 font-bold rounded truncate max-w-[90px]">${goalName}</span>
+                </div>
+                <span class="text-[9px] text-slate-500 dark:text-slate-400 block mt-0.5 font-medium truncate">${formatDateIndo(t.tanggal)} • ${t.catatan || '-'}</span>
+              </div>
+              <div class="flex items-center space-x-2 text-right flex-shrink-0">
+                <div>
+                  <span class="font-black text-slate-900 dark:text-white block">${Math.abs(t.gram).toFixed(2)} gr</span>
+                  <span class="text-[9px] text-slate-500 dark:text-slate-400 block font-semibold">${formatRupiah(Math.abs(t.totalRp))}</span>
+                </div>
+                <button onclick="openModalEditTx('${t.id}')" class="text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 p-0.5">
+                  <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      document.getElementById('set-harga-beli').value = appData.settings.hargaBeli;
+      document.getElementById('set-harga-buyback').value = appData.settings.hargaBuyback;
+      document.getElementById('set-pph').value = appData.settings.pph22Percent;
+      document.getElementById('set-materai').value = appData.settings.biayaMaterai;
+      document.getElementById('set-batas-materai').value = appData.settings.batasMaterai;
+      document.getElementById('set-zakat-nishab').value = appData.settings.zakatNishab || 85.00;
+      document.getElementById('set-zakat-rate').value = appData.settings.zakatRate || 2.5;
+      document.getElementById('set-zakat-price-ref').value = appData.settings.zakatPriceRef || "beli";
+      document.getElementById('set-profile-label').value = appData.settings.profileLabel || "by top8";
+      document.getElementById('set-new-pin').value = '';
+
+      lucide.createIcons();
+    }
+
+    /**
+     * Manajemen & Validasi PIN Keamanan dengan Dukungan Inline Error
+     */
+    function triggerSecurityChallenge(actionCallback) {
+      pendingAction = actionCallback;
+      
+      // Reset State Modal PIN sebelum dibuka
+      document.getElementById('challenge-pin').value = '';
+      document.getElementById('challenge-pin').className = "w-full bg-slate-50 dark:bg-sb-bg text-center p-2 rounded-xl font-extrabold tracking-[0.5em] text-base border border-slate-300 dark:border-sb-border focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white focus:outline-none transition-colors";
+      document.getElementById('challenge-error-msg').classList.add('hidden');
+      
+      document.getElementById('modal-security-challenge').classList.remove('hidden');
+      setTimeout(() => document.getElementById('challenge-pin').focus(), 150);
+    }
+
+    function cancelSecurityChallenge() {
+      pendingAction = null;
+      document.getElementById('modal-security-challenge').classList.add('hidden');
+    }
+
+    function clearInlineError() {
+      const errorMsg = document.getElementById('challenge-error-msg');
+      const pinInput = document.getElementById('challenge-pin');
+      
+      errorMsg.classList.add('hidden');
+      pinInput.className = "w-full bg-slate-50 dark:bg-sb-bg text-center p-2 rounded-xl font-extrabold tracking-[0.5em] text-base border border-slate-300 dark:border-sb-border focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white focus:outline-none transition-colors";
+    }
+
+    function submitSecurityChallenge() {
+      const enteredPin = document.getElementById('challenge-pin').value;
+      const errorMsg = document.getElementById('challenge-error-msg');
+      const pinInput = document.getElementById('challenge-pin');
+      const card = document.getElementById('challenge-modal-card');
+
+      if (!enteredPin || enteredPin.length !== 4) {
+        // Tampilkan inline error
+        errorMsg.querySelector('span').innerText = "PIN harus berupa 4 digit!";
+        errorMsg.classList.remove('hidden');
+        pinInput.className = "w-full bg-slate-50 dark:bg-sb-bg text-center p-2 rounded-xl font-extrabold tracking-[0.5em] text-base border border-rose-500 focus:ring-2 focus:ring-rose-500 text-slate-900 dark:text-white focus:outline-none transition-colors";
+        
+        // Efek getar modal kustom
+        card.classList.add('animate-shake');
+        setTimeout(() => card.classList.remove('animate-shake'), 400);
+        return;
+      }
+
+      if (enteredPin !== appData.settings.pin.toString()) {
+        // Tampilkan inline error
+        errorMsg.querySelector('span').innerText = "PIN salah! Akses ditolak.";
+        errorMsg.classList.remove('hidden');
+        
+        // Input text error state styling
+        pinInput.className = "w-full bg-slate-50 dark:bg-sb-bg text-center p-2 rounded-xl font-extrabold tracking-[0.5em] text-base border border-rose-500 focus:ring-2 focus:ring-rose-500 text-slate-900 dark:text-white focus:outline-none transition-colors";
+        pinInput.value = ''; // Kosongkan input kembali
+        
+        // Jalankan Efek Getar Premium
+        card.classList.add('animate-shake');
+        setTimeout(() => card.classList.remove('animate-shake'), 400);
+        return;
+      }
+
+      // PIN BENAR -> Tutup modal & jalankan callback aman
+      document.getElementById('modal-security-challenge').classList.add('hidden');
+      if (pendingAction) { 
+        pendingAction(enteredPin); 
+        pendingAction = null; 
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const target = current === 'dark' ? 'light' : 'dark';
+      applyTheme(target);
+      appData.settings.theme = target;
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run
+          .withFailureHandler(function(err) { showToast("Gagal menyimpan tema: " + err.message, "error"); })
+          .saveSettings(appData.settings, appData.settings.pin);
+      }
+    }
+
+    function applyTheme(theme) {
+      const icon = document.getElementById('theme-icon');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+        icon.setAttribute('data-lucide', 'sun');
+      } else {
+        document.documentElement.classList.remove('dark');
+        icon.setAttribute('data-lucide', 'moon');
+      }
+      lucide.createIcons();
+    }
+
+    function switchTab(tab) {
+      const container = document.getElementById('swipe-container');
+      
+      container.style.opacity = '0';
+      
+      setTimeout(() => {
+        tabOrder.forEach(t => {
+          document.getElementById('page-' + t).classList.add('hidden');
+          document.getElementById('nav-nav-' + t).className = "flex flex-col items-center space-y-1 text-slate-500 dark:text-slate-400 font-bold transition-transform";
+        });
+        
+        document.getElementById('page-' + tab).classList.remove('hidden');
+        document.getElementById('nav-nav-' + tab).className = "flex flex-col items-center space-y-1 text-emerald-600 dark:text-emerald-500 font-extrabold transition-transform scale-105";
+        
+        currentTab = tab;
+        container.style.opacity = '1';
+        
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 120);
+    }
+
+    function setTipeTx(tipe) {
+      document.getElementById('tx-tipe').value = tipe;
+      const bBeli = document.getElementById('btn-tipe-beli');
+      const bJual = document.getElementById('btn-tipe-jual');
+      if(tipe === 'Beli') {
+        bBeli.className = "py-2.5 rounded-xl font-bold text-xs transition-all border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600";
+        bJual.className = "py-2.5 rounded-xl font-semibold text-xs transition-all border border-slate-300 dark:border-sb-border text-slate-600 dark:text-slate-400 bg-white dark:bg-transparent";
+      } else {
+        bBeli.className = "py-2.5 rounded-xl font-semibold text-xs transition-all border border-slate-300 dark:border-sb-border text-slate-600 dark:text-slate-400 bg-white dark:bg-transparent";
+        bJual.className = "py-2.5 rounded-xl font-bold text-xs transition-all border-2 border-rose-500 bg-rose-50 dark:bg-rose-950/30 text-rose-600";
+      }
+      hitungTotalTx();
+    }
+
+    function gunakanHargaSesuaiSetting() {
+      const tipe = document.getElementById('tx-tipe').value;
+      document.getElementById('tx-harga').value = (tipe === 'Beli') ? appData.settings.hargaBeli : appData.settings.hargaBuyback;
+      hitungTotalTx();
+    }
+
+    function hitungTotalTx() {
+      const g = parseFloat(document.getElementById('tx-gram').value) || 0;
+      const h = parseFloat(document.getElementById('tx-harga').value) || 0;
+      document.getElementById('tx-total-label').innerText = formatRupiah(g * h);
+      document.getElementById('tx-total-val').value = g * h;
+    }
+
+    function handleFormTransaksi(e) {
+      e.preventDefault();
+      const tx = {
+        tipe: document.getElementById('tx-tipe').value,
+        goalId: document.getElementById('tx-goal').value,
+        gram: parseFloat(document.getElementById('tx-gram').value),
+        hargaSatuan: parseFloat(document.getElementById('tx-harga').value),
+        totalRp: parseFloat(document.getElementById('tx-total-val').value),
+        tanggal: document.getElementById('tx-tanggal').value,
+        catatan: document.getElementById('tx-catatan').value
+      };
+
+      triggerSecurityChallenge(function(pinKeamanan) {
+        showToast("Menyimpan transaksi...");
+        if (typeof google === 'undefined' || !google.script) {
+          if(tx.tipe === "Jual") { tx.gram = -tx.gram; tx.totalRp = -tx.totalRp; }
+          tx.id = "tx_" + Date.now();
+          appData.transactions.unshift(tx);
+          renderAll();
+          document.getElementById('tx-form').reset();
+          setDefaultDate();
+          showToast("Berhasil dicatat (Simulasi)!");
+          return;
+        }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if(response.success) {
+              document.getElementById('tx-form').reset();
+              setDefaultDate(); loadDataFromGAS(); showToast(response.message);
+            } else { showToast(response.message, "error"); }
+          }).addTransaction(tx, pinKeamanan);
+      });
+    }
+
+    function selectColorNew(color, el) {
+      document.getElementById('goal-color').value = color;
+      document.querySelectorAll('.color-btn-new').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-slate-400'));
+      el.classList.add('ring-2', 'ring-offset-2', 'ring-slate-400');
+    }
+
+    function selectColorEdit(color, el) {
+      document.getElementById('edit-goal-color').value = color;
+      document.querySelectorAll('.color-btn-edit').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-slate-400'));
+      el.classList.add('ring-2', 'ring-offset-2', 'ring-slate-400');
+    }
+
+    function handleFormGoal(e) {
+      e.preventDefault();
+      const goal = {
+        nama: document.getElementById('goal-nama').value,
+        targetGram: parseFloat(document.getElementById('goal-target').value),
+        warna: document.getElementById('goal-color').value
+      };
+      triggerSecurityChallenge(function(pinKeamanan) {
+        showToast("Menyimpan target...");
+        if (typeof google === 'undefined' || !google.script) {
+          goal.id = "g_" + Date.now(); appData.goals.push(goal); renderAll(); closeModalAddGoal(); return;
+        }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if(response.success) { closeModalAddGoal(); loadDataFromGAS(); showToast(response.message); }
+            else { showToast(response.message, "error"); }
+          }).addGoal(goal, pinKeamanan);
+      });
+    }
+
+    function openModalEditGoal(id) {
+      const goal = appData.goals.find(g => g.id === id);
+      if (!goal) return;
+      document.getElementById('edit-goal-id').value = goal.id;
+      document.getElementById('edit-goal-nama').value = goal.nama;
+      document.getElementById('edit-goal-target').value = goal.targetGram;
+      document.getElementById('edit-goal-color').value = goal.warna || 'bg-blue-500';
+      document.querySelectorAll('.color-btn-edit').forEach(b => {
+        b.classList.remove('ring-2', 'ring-offset-2', 'ring-slate-400');
+        if (b.classList.contains(goal.warna)) b.classList.add('ring-2', 'ring-offset-2', 'ring-slate-400');
+      });
+      document.getElementById('modal-edit-goal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModalEditGoal() { document.getElementById('modal-edit-goal').classList.add('hidden'); }
+
+    function handleUpdateGoal(e) {
+      e.preventDefault();
+      const updatedGoal = {
+        id: document.getElementById('edit-goal-id').value,
+        nama: document.getElementById('edit-goal-nama').value,
+        targetGram: parseFloat(document.getElementById('edit-goal-target').value),
+        warna: document.getElementById('edit-goal-color').value
+      };
+      triggerSecurityChallenge(function(pinKeamanan) {
+        if (typeof google === 'undefined' || !google.script) {
+          const idx = appData.goals.findIndex(g => g.id === updatedGoal.id);
+          if (idx !== -1) { appData.goals[idx] = updatedGoal; renderAll(); closeModalEditGoal(); }
+          return;
+        }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if(response.success) { closeModalEditGoal(); loadDataFromGAS(); showToast(response.message); }
+            else { showToast(response.message, "error"); }
+          }).updateGoal(updatedGoal, pinKeamanan);
+      });
+    }
+
+    function triggerDeleteGoalConfirm() {
+      showCustomConfirm("Hapus Target?", "Semua transaksi terkait target ini akan dialihkan ke Umum.", function(confirmed) {
+        if (confirmed) {
+          handleDeleteGoal();
+        }
+      });
+    }
+
+    function handleDeleteGoal() {
+      const id = document.getElementById('edit-goal-id').value;
+      triggerSecurityChallenge(function(pinKeamanan) {
+        if (typeof google === 'undefined' || !google.script) {
+          appData.goals = appData.goals.filter(g => g.id !== id);
+          appData.transactions = appData.transactions.map(t => { if (t.goalId === id) t.goalId = ""; return t; });
+          renderAll(); closeModalEditGoal(); return;
+        }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if(response.success) { closeModalEditGoal(); loadDataFromGAS(); showToast(response.message); }
+            else { showToast(response.message, "error"); }
+          }).deleteGoal(id, pinKeamanan);
+      });
+    }
+
+    function openModalEditTx(id) {
+      const tx = appData.transactions.find(t => t.id === id);
+      if (!tx) return;
+      document.getElementById('edit-tx-id').value = tx.id;
+      document.getElementById('edit-tx-tipe').value = tx.tipe;
+      document.getElementById('edit-tx-goal').value = tx.goalId || "";
+      document.getElementById('edit-tx-gram').value = Math.abs(tx.gram);
+      document.getElementById('edit-tx-harga').value = tx.hargaSatuan;
+      document.getElementById('edit-tx-tanggal').value = tx.tanggal;
+      document.getElementById('edit-tx-catatan').value = tx.catatan || "";
+      hitungTotalEditTx();
+      document.getElementById('modal-edit-tx').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModalEditTx() { document.getElementById('modal-edit-tx').classList.add('hidden'); }
+    
+    function hitungTotalEditTx() {
+      const g = parseFloat(document.getElementById('edit-tx-gram').value) || 0;
+      const h = parseFloat(document.getElementById('edit-tx-harga').value) || 0;
+      document.getElementById('edit-tx-total-label').innerText = formatRupiah(g * h);
+      document.getElementById('edit-tx-total-val').value = g * h;
+    }
+
+    function handleUpdateTx(e) {
+      e.preventDefault();
+      const updatedTx = {
+        id: document.getElementById('edit-tx-id').value,
+        tipe: document.getElementById('edit-tx-tipe').value,
+        goalId: document.getElementById('edit-tx-goal').value,
+        gram: parseFloat(document.getElementById('edit-tx-gram').value),
+        hargaSatuan: parseFloat(document.getElementById('edit-tx-harga').value),
+        totalRp: parseFloat(document.getElementById('edit-tx-total-val').value),
+        tanggal: document.getElementById('edit-tx-tanggal').value,
+        catatan: document.getElementById('edit-tx-catatan').value
+      };
+      triggerSecurityChallenge(function(pinKeamanan) {
+        if (typeof google === 'undefined' || !google.script) {
+          if(updatedTx.tipe === "Jual") { updatedTx.gram = -updatedTx.gram; updatedTx.totalRp = -updatedTx.totalRp; }
+          const idx = appData.transactions.findIndex(t => t.id === updatedTx.id);
+          if (idx !== -1) { appData.transactions[idx] = updatedTx; renderAll(); closeModalEditTx(); }
+          return;
+        }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if(response.success) { closeModalEditTx(); loadDataFromGAS(); showToast(response.message); }
+            else { showToast(response.message, "error"); }
+          }).updateTransaction(updatedTx, pinKeamanan);
+      });
+    }
+
+    function triggerDeleteTxConfirm() {
+      showCustomConfirm("Hapus Transaksi?", "Apakah Anda yakin ingin menghapus catatan transaksi ini secara permanen?", function(confirmed) {
+        if (confirmed) {
+          handleDeleteTx();
+        }
+      });
+    }
+
+    function handleDeleteTx() {
+      const id = document.getElementById('edit-tx-id').value;
+      triggerSecurityChallenge(function(pinKeamanan) {
+        if (typeof google === 'undefined' || !google.script) {
+          appData.transactions = appData.transactions.filter(t => t.id !== id);
+          renderAll(); closeModalEditTx(); return;
+        }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if(response.success) { closeModalEditTx(); loadDataFromGAS(); showToast(response.message); }
+            else { showToast(response.message, "error"); }
+          }).deleteTransaction(id, pinKeamanan);
+      });
+    }
+
+    function handleFormSettings(e) {
+      e.preventDefault();
+      const newPinInput = document.getElementById('set-new-pin').value;
+      const targetPin = (newPinInput && newPinInput.length === 4) ? newPinInput : appData.settings.pin;
+      const updatedSettings = {
+        hargaBeli: parseFloat(document.getElementById('set-harga-beli').value),
+        hargaBuyback: parseFloat(document.getElementById('set-harga-buyback').value),
+        pph22Percent: parseFloat(document.getElementById('set-pph').value),
+        biayaMaterai: parseFloat(document.getElementById('set-materai').value),
+        batasMaterai: parseFloat(document.getElementById('set-batas-materai').value),
+        zakatNishab: parseFloat(document.getElementById('set-zakat-nishab').value),
+        zakatRate: parseFloat(document.getElementById('set-zakat-rate').value),
+        zakatPriceRef: document.getElementById('set-zakat-price-ref').value,
+        profileLabel: document.getElementById('set-profile-label').value,
+        pin: targetPin, theme: appData.settings.theme
+      };
+      triggerSecurityChallenge(function(pinKeamanan) {
+        if (typeof google === 'undefined' || !google.script) { appData.settings = updatedSettings; renderAll(); return; }
+        google.script.run
+          .withFailureHandler(function(err) { showToast(err.message, "error"); })
+          .withSuccessHandler(function(response) {
+            if (response.success) { loadDataFromGAS(); showToast(response.message); }
+            else { showToast(response.message, "error"); }
+          }).saveSettings(updatedSettings, pinKeamanan);
+      });
+    }
+
+    /**
+     * Konfirmasi Reset Data dengan Dukungan Inline Error Modal
+     */
+    function confirmResetApp() { 
+      document.getElementById('confirm-pin').value = '';
+      document.getElementById('confirm-error-msg').classList.add('hidden');
+      document.getElementById('confirm-pin').className = "w-full bg-slate-100 dark:bg-sb-bg text-slate-900 dark:text-white text-center p-2 rounded-xl font-bold tracking-widest text-xs border border-slate-300 dark:border-sb-border focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors";
+      
+      document.getElementById('modal-confirm').classList.remove('hidden'); 
+      setTimeout(() => document.getElementById('confirm-pin').focus(), 150);
+    }
+    
+    function closeModalConfirm() { 
+      document.getElementById('modal-confirm').classList.add('hidden'); 
+    }
+
+    function clearResetInlineError() {
+      const errorMsg = document.getElementById('confirm-error-msg');
+      const pinInput = document.getElementById('confirm-pin');
+      
+      errorMsg.classList.add('hidden');
+      pinInput.className = "w-full bg-slate-100 dark:bg-sb-bg text-slate-900 dark:text-white text-center p-2 rounded-xl font-bold tracking-widest text-xs border border-slate-300 dark:border-sb-border focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors";
+    }
+    
+    function executeReset() {
+      const pinVal = document.getElementById('confirm-pin').value;
+      const errorMsg = document.getElementById('confirm-error-msg');
+      const pinInput = document.getElementById('confirm-pin');
+      const card = document.getElementById('modal-confirm-card');
+
+      if(pinVal !== appData.settings.pin.toString()) { 
+        // Tampilkan inline error
+        errorMsg.classList.remove('hidden');
+        pinInput.className = "w-full bg-slate-100 dark:bg-sb-bg text-slate-900 dark:text-white text-center p-2 rounded-xl font-bold tracking-widest text-xs border border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors";
+        pinInput.value = ''; // Kosongkan
+        
+        // Efek getar modal kustom
+        card.classList.add('animate-shake');
+        setTimeout(() => card.classList.remove('animate-shake'), 400);
+        return; 
+      }
+      
+      closeModalConfirm();
+      showToast("Menghapus data...");
+      
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run
+          .withFailureHandler(function(err) { showToast("Gagal reset data: " + err.message, "error"); })
+          .withSuccessHandler(function() { window.location.reload(); }).resetAllData();
+      } else { 
+        setTimeout(() => window.location.reload(), 500); 
+      }
+    }
+
+    function openModalAddGoal() { document.getElementById('modal-add-goal').classList.remove('hidden'); }
+    function closeModalAddGoal() { document.getElementById('modal-add-goal').classList.add('hidden'); }
+    function setDefaultDate() { document.getElementById('tx-tanggal').value = new Date().toISOString().split('T')[0]; }
+    function formatRupiah(num) { return 'Rp ' + Math.abs(num).toLocaleString('id-ID'); }
+    function formatDateIndo(d) { return new Date(d).toLocaleDateString('id-ID', {day:'numeric', month:'short'}); }
+
+    function showToast(msg, type = "success") {
+      const el = document.getElementById('toast-banner');
+      const icon = document.getElementById('toast-icon');
+      document.getElementById('toast-message').innerText = msg;
+      
+      if(type === 'error') {
+        el.className = "fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50 p-3.5 rounded-xl shadow-2xl flex items-center space-x-2.5 text-xs font-bold transition-all text-white bg-rose-600 border border-rose-500/20";
+        icon.setAttribute('data-lucide', 'shield-alert');
+      } else {
+        el.className = "fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50 p-3.5 rounded-xl shadow-2xl flex items-center space-x-2.5 text-xs font-bold transition-all text-white bg-emerald-600 border border-emerald-500/20";
+        icon.setAttribute('data-lucide', 'shield-check');
+      }
+      
+      lucide.createIcons();
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 3500);
+    }
+  </script>
+</body>
+</html>
