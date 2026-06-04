@@ -110,7 +110,7 @@ function initSheetsStructure(ss) {
  * Endpoint utama Web App untuk merender UI HTML
  */
 function doGet() {
-  const template = HtmlService.createTemplateFromFile('index');
+  const template = HtmlService.createTemplateFromFile('Index');
   return template.evaluate()
     .setTitle("Nabung Emas - Premium Dashboard")
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover')
